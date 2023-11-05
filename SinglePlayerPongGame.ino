@@ -18,7 +18,7 @@
 // #define DEMO_MODE
 
 #include <Adafruit_GFX.h>    // Core graphics library
-#include <Adafruit_TFTLCD.h>
+#include <MCUFRIEND_kbv.h>
 #include <TouchScreen.h>
 
 
@@ -42,7 +42,7 @@
 #define LCD_WR A1 // LCD Write goes to Analog 1
 #define LCD_RD A0 // LCD Read goes to Analog 0
 #define LCD_RESET A4 // Can alternately just connect to Arduino's reset pin
-Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
+MCUFRIEND_kbv tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 
 #define LOWFLASH (defined(__AVR_ATmega328P__) && defined(MCUFRIEND_KBV_H_))
 
@@ -50,8 +50,8 @@ Adafruit_TFTLCD tft(LCD_CS, LCD_CD, LCD_WR, LCD_RD, LCD_RESET);
 #define MINPRESSURE 40
 #define MAXPRESSURE 1000
 // Touch screen calibration
-const int16_t XP = 8, XM = A2, YP = A3, YM = 9; //240x320 ID=0x9341
-const int16_t TS_LEFT = 122, TS_RT = 929, TS_TOP = 77, TS_BOT = 884;
+const int16_t XP = 6, XM = 16, YP = 15, YM = 7; //240x320 ID=0x154
+const int16_t TS_LEFT = 907, TS_RT = 136, TS_TOP = 942, TS_BOT = 139;
 
 const TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
 
@@ -202,7 +202,7 @@ void loop(void)
 }
 
 
-void newGame(game_type* newGame, game_state_type * state,  Adafruit_TFTLCD &tft) {
+void newGame(game_type* newGame, game_state_type * state,  MCUFRIEND_kbv &tft) {
   game = newGame;
   setupState(game, state, tft);
 
@@ -222,13 +222,13 @@ void newGame(game_type* newGame, game_state_type * state,  Adafruit_TFTLCD &tft)
 
 }
 
-void setupStateSizes(game_type* game, game_state_type * state, Adafruit_TFTLCD &tft) {
+void setupStateSizes(game_type* game, game_state_type * state, MCUFRIEND_kbv &tft) {
   state->bottom = tft.height() - 30;
   state->brickwidth = tft.width() / game->columns;
   state->brickheight = tft.height() / 24;
 }
 
-void setupState(game_type* game, game_state_type * state, Adafruit_TFTLCD &tft) {
+void setupState(game_type* game, game_state_type * state, MCUFRIEND_kbv &tft) {
   setupStateSizes(game, state, tft);
   for (int i = 0; i < game->rows ; i ++) {
     state->wallState[i] = 0;
@@ -436,7 +436,7 @@ boolean isBrickIn(int wall[], uint8_t x, uint8_t y) {
 // TFT SETUP
 //////////////////////////////////////////////////////////////
 
-void initTft(Adafruit_TFTLCD & tft) {
+void initTft(MCUFRIEND_kbv & tft) {
   tft.reset();
   uint16_t ID = tft.readID();
   tft.begin(ID);
